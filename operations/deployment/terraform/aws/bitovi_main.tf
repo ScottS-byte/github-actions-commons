@@ -820,13 +820,18 @@ locals {
   alb_url              = try(module.aws_lb[0].aws_alb_dns_name, null) != null ? "${local.protocol}${module.aws_lb[0].aws_alb_dns_name}" : null
 
   vm_url_candidates = [
-    try(module.aws_route53[0].vm_url, null),
-    local.alb_url,
-    local.elb_url,
-    local.ec2_endpoint
+    try(try(module.aws_route53[0].vm_url, null),
+      local.alb_url,
+      local.elb_url,
+    local.ec2_endpoint, null)
   ]
-  vm_url_first_nonempty = [for url in local.vm_url_candidates : url if url != null && url != ""][0]
+  vm_url_first_nonempty = (
+    length([for url in local.vm_url_candidates : url if url != null && url != ""]) > 0
+    ? [for url in local.vm_url_candidates : url if url != null && url != ""][0]
+    : null
+  )
 }
+
 # VPC
 output "aws_vpc_id" {
   value = module.vpc.aws_selected_vpc_id
@@ -883,7 +888,8 @@ output "application_public_dns" {
 }
 
 output "vm_url" {
-  value = local.vm_url_first_nonempty
+  description = "Will print the best available URL for the VM, ALB, ELB or EC2 instance"
+  value       = try(local.vm_url_first_nonempty, null)
 }
 
 # EFS
