@@ -40,12 +40,20 @@ data "aws_efs_file_system" "efs" {
   file_system_id = var.aws_efs_create ? aws_efs_file_system.efs[0].id : var.aws_efs_fs_id
 }
 
+resource "terraform_data" "efs_ha_tracker" {
+  input = var.aws_efs_create_ha
+}
+
 resource "aws_efs_mount_target" "efs_mount_target" {
   count           = var.aws_efs_create_mount_target ? length(local.aws_efs_subnets) : 0
   file_system_id  = var.aws_efs_create ? aws_efs_file_system.efs[0].id : var.aws_efs_fs_id
   subnet_id       = local.aws_efs_subnets[count.index]
   security_groups = [aws_security_group.efs_security_group[0].id]
   depends_on      = [aws_efs_file_system.efs]
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.efs_ha_tracker]
+  }
 }
 
 resource "aws_efs_replication_configuration" "efs_rep_config" {
@@ -61,7 +69,7 @@ resource "aws_efs_replication_configuration" "efs_rep_config" {
 
 resource "aws_security_group" "efs_security_group" {
   count       = var.aws_efs_create_mount_target ? 1 : 0
-  name        = var.aws_efs_security_group_name != null ? var.aws_efs_security_group_name : "SG for ${var.aws_resource_identifier} - EFS"
+  name        = var.aws_efs_security_group_name != "" ? var.aws_efs_security_group_name : "SG for ${var.aws_resource_identifier} - EFS"
   description = "SG for ${var.aws_resource_identifier} - EFS"
   vpc_id      = var.aws_selected_vpc_id
   egress {
@@ -72,6 +80,9 @@ resource "aws_security_group" "efs_security_group" {
   }
   tags = {
     Name = "${var.aws_resource_identifier}-efs"
+  }
+  lifecycle {
+    ignore_changes = [name]
   }
 }
 

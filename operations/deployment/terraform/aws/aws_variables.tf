@@ -1620,6 +1620,18 @@ variable "aws_ecs_task_execution_role" {
   default     = ""
 }
 
+variable "aws_ecs_task_role" {
+  type        = string
+  description = "Elastic Container Service task role name."
+  default     = ""
+}
+
+variable "aws_ecs_task_reuse_role" {
+  type        = bool
+  description = "Toggle reusing the task execution role as the task role"
+  default     = false
+}
+
 variable "aws_ecs_task_json_definition_file" {
   type        = string
   description = "Filename for json file containing ECS conteiner definitions"
@@ -1653,6 +1665,12 @@ variable "aws_ecs_container_cpu" {
 variable "aws_ecs_container_mem" {
   type        = string
   description = "Container Mem Amount"
+  default     = ""
+}
+
+variable "aws_ecs_container_user" {
+  type        = string
+  description = "Container User"
   default     = ""
 }
 
@@ -1768,6 +1786,54 @@ variable "aws_ecs_cloudwatch_retention_days" {
   type        = string
   description = "Number of days to retain logs. 0 to never expire."
   default     = "14"
+}
+
+variable "aws_ecs_efs_fs_id" {
+  type        = string
+  description = "ID of the EFS File System"
+  default     = null
+}
+
+variable "aws_ecs_efs_root_directory" {
+  type        = string
+  description = "Directory within the FS to mount as the root directory. Defaults to /, ignored if access_point_id defined"
+  default     = null
+}
+
+variable "aws_ecs_efs_transit_encryption" {
+  type        = bool
+  description = "EFS Volume Transit Encryption. Defaults to true (ENABLED)"
+  default     = true
+}
+
+variable "aws_ecs_efs_transit_encryption_port" {
+  type        = string
+  description = "EFS Volume Transit Encryption Port"
+  default     = null
+}
+
+variable "aws_ecs_efs_access_point_id" {
+  type        = string
+  description = "EFS Volume Access Point ID to use"
+  default     = null
+}
+
+variable "aws_ecs_efs_container_path" {
+  type        = string
+  description = "Container path where to mount the EFS volume"
+  default     = "/mnt/efs"
+}
+
+variable "aws_ecs_efs_readonly" {
+  type        = bool
+  description = "Whether the EFS volume is mounted as read-only"
+  default     = false
+}
+
+variable "aws_ecs_efs_iam" {
+  type        = bool
+  description = "Whether or not to use the IAM role defined in a task definition when mounting the FS. Defaults to false. (DISABLED) "
+  default     = false
 }
 
 variable "aws_ecs_additional_tags" {

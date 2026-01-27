@@ -365,12 +365,15 @@ if [[ $(alpha_only "$AWS_ECS_ENABLE") == true ]]; then
   aws_ecs_task_name=$(generate_var aws_ecs_task_name $AWS_ECS_TASK_NAME)
   aws_ecs_task_ignore_definition=$(generate_var aws_ecs_task_ignore_definition $AWS_ECS_TASK_IGNORE_DEFINITION)
   aws_ecs_task_execution_role=$(generate_var aws_ecs_task_execution_role $AWS_ECS_TASK_EXECUTION_ROLE)
+  aws_ecs_task_role=$(generate_var aws_ecs_task_role $AWS_ECS_TASK_ROLE)
+  aws_ecs_task_reuse_role=$(generate_var aws_ecs_task_reuse_role $AWS_ECS_TASK_REUSE_ROLE)  
   aws_ecs_task_json_definition_file=$(generate_var aws_ecs_task_json_definition_file $AWS_ECS_TASK_JSON_DEFINITION_FILE)
   aws_ecs_task_network_mode=$(generate_var aws_ecs_task_network_mode $AWS_ECS_TASK_NETWORK_MODE)
   aws_ecs_task_cpu=$(generate_var aws_ecs_task_cpu $AWS_ECS_TASK_CPU)
   aws_ecs_task_mem=$(generate_var aws_ecs_task_mem $AWS_ECS_TASK_MEM)
   aws_ecs_container_cpu=$(generate_var aws_ecs_container_cpu $AWS_ECS_CONTAINER_CPU)
-  aws_ecs_container_cpu=$(generate_var aws_ecs_container_mem $AWS_ECS_CONTAINER_MEM)
+  aws_ecs_container_mem=$(generate_var aws_ecs_container_mem $AWS_ECS_CONTAINER_MEM)
+  aws_ecs_container_user=$(generate_var aws_ecs_container_user $AWS_ECS_CONTAINER_USER)
   aws_ecs_node_count=$(generate_var aws_ecs_node_count $AWS_ECS_NODE_COUNT)
   aws_ecs_app_image=$(generate_var aws_ecs_app_image $AWS_ECS_APP_IMAGE)
   aws_ecs_env_vars=$(generate_var aws_ecs_env_vars $AWS_ECS_ENV_VARS )
@@ -391,6 +394,14 @@ if [[ $(alpha_only "$AWS_ECS_ENABLE") == true ]]; then
   aws_ecs_cloudwatch_lg_name=$(generate_var aws_ecs_cloudwatch_lg_name $AWS_ECS_CLOUDWATCH_LG_NAME)
   aws_ecs_cloudwatch_skip_destroy=$(generate_var aws_ecs_cloudwatch_skip_destroy $AWS_ECS_CLOUDWATCH_SKIP_DESTROY)
   aws_ecs_cloudwatch_retention_days=$(generate_var aws_ecs_cloudwatch_retention_days $AWS_ECS_CLOUDWATCH_RETENTION_DAYS)
+  aws_ecs_efs_fs_id=$(generate_var aws_ecs_efs_fs_id $AWS_ECS_EFS_FS_ID)
+  aws_ecs_efs_root_directory=$(generate_var aws_ecs_efs_root_directory $AWS_ECS_EFS_ROOT_DIRECTORY)
+  aws_ecs_efs_transit_encryption=$(generate_var aws_ecs_efs_transit_encryption $AWS_ECS_EFS_TRANSIT_ENCRYPTION)
+  aws_ecs_efs_transit_encryption_port=$(generate_var aws_ecs_efs_transit_encryption_port $AWS_ECS_EFS_TRANSIT_ENCRYPTION_PORT)
+  aws_ecs_efs_access_point_id=$(generate_var aws_ecs_efs_access_point_id $AWS_ECS_EFS_ACCESS_POINT_ID)
+  aws_ecs_efs_container_path=$(generate_var aws_ecs_efs_container_path $AWS_ECS_EFS_CONTAINER_PATH)
+  aws_ecs_efs_readonly=$(generate_var aws_ecs_efs_readonly $AWS_ECS_EFS_READONLY)
+  aws_ecs_efs_iam=$(generate_var aws_ecs_efs_iam $AWS_ECS_EFS_IAM)
   aws_ecs_additional_tags=$(generate_var aws_ecs_additional_tags $AWS_ECS_ADDITIONAL_TAGS)
 fi
 
@@ -762,12 +773,15 @@ $aws_ecs_task_type
 $aws_ecs_task_name
 $aws_ecs_task_ignore_definition
 $aws_ecs_task_execution_role
+$aws_ecs_task_role
+$aws_ecs_task_reuse_role
 $aws_ecs_task_json_definition_file
 $aws_ecs_task_network_mode
 $aws_ecs_task_cpu
 $aws_ecs_task_mem
 $aws_ecs_container_cpu
 $aws_ecs_container_mem
+$aws_ecs_container_user
 $aws_ecs_node_count
 $aws_ecs_app_image
 $aws_ecs_env_vars
@@ -788,6 +802,14 @@ $aws_ecs_cloudwatch_enable
 $aws_ecs_cloudwatch_lg_name
 $aws_ecs_cloudwatch_skip_destroy
 $aws_ecs_cloudwatch_retention_days
+$aws_ecs_efs_fs_id
+$aws_ecs_efs_root_directory
+$aws_ecs_efs_transit_encryption
+$aws_ecs_efs_transit_encryption_port
+$aws_ecs_efs_access_point_id
+$aws_ecs_efs_container_path
+$aws_ecs_efs_readonly
+$aws_ecs_efs_iam
 $aws_ecs_additional_tags
 
 #-- ECR --#
